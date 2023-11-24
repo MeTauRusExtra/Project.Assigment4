@@ -1,3 +1,4 @@
+// นี้คือคลาส Node ที่ใช้เก็บข้อมูลของคำศัพท์ โดยใช้โครงสร้างของ Doubly Linked List ให้มัน next และ previous ของแต่ละโหนด
 class Node {
     constructor(englishWord, thaiTranslation, wordType) {
         this.englishWord = englishWord;
@@ -8,13 +9,14 @@ class Node {
     }
 }
 
+// นี้คือคลาส DoubleLinkedList ที่ใช้เพิ่ม และ ค้นหา Node 
 class DoubleLinkedList {
     constructor() {
         this.head = null;
         this.tail = null;
         this.current = null;
     }
-
+    // ฟังก์ชั่นนี้ใช้ในการค้นหา Node จากคำศัพท์ภาษาอังกฤษ
     findNode(englishWord) {
         let currentNode = this.head;
 
@@ -28,7 +30,7 @@ class DoubleLinkedList {
         return null; // ไม่พบ node ที่ตรงกับคำศัพท์ที่ระบุ
     }
 
-
+    // ฟังก์ชั่นนี้ใช้ในการเพิ่ม Node ใหม่
     addNode(englishWord, thaiTranslation, wordType) {
         const newNode = new Node(englishWord, thaiTranslation, wordType);
 
@@ -42,12 +44,12 @@ class DoubleLinkedList {
             this.tail = newNode;
         }
     }
-
+    // ฟังก์ชั่นนี้ใช้ในการแสดงข้อมูลของ Node ปัจจุบัน
     displayCurrentWord() {
         var currentWordDisplay = document.getElementById("currentWordDisplay");
         currentWordDisplay.innerHTML = `<p>English: ${this.current.englishWord}</p><p>Thai: ${this.current.thaiTranslation}</p><p>Type: ${this.current.wordType}</p>`;
     }
-
+    // ฟังก์ชั่นนี้ใช้ในการแสดงข้อมูลของ Node ถัดไป
     showNextWord() {
         if (this.current && this.current.next) {
             this.current = this.current.next;
@@ -56,7 +58,7 @@ class DoubleLinkedList {
         }
         this.displayCurrentWord();
     }
-
+    // ฟังก์ชั่นนี้ใช้ในการแสดงข้อมูลของ Node ก่อนหน้า
     showPreviousWord() {
         if (this.current && this.current.previous) {
             this.current = this.current.previous;
@@ -66,12 +68,10 @@ class DoubleLinkedList {
         this.displayCurrentWord();
     }
 }
-
+// สร้างอ็อบเจ็กต์ของ DoubleLinkedList
 var wordList = new DoubleLinkedList();
 
-
-
-// ใส่ข้อมูลตัวอย่าง
+// ใส่คลังคำศัพท์
 wordList.addNode("apple", "แอปเปิ้ล", "noun");
 wordList.addNode("banana", "กล้วย", "noun");
 wordList.addNode("cat", "แมว", "noun");
@@ -96,15 +96,15 @@ wordList.addNode("victory", "ชัยชนะ", "noun");
 
 
 
-
+// ฟังก์ชั่นนี้ใช้ในการแปลคำศัพท์
 function translateWord(resultDiv) {
     var englishWordInput = document.getElementById("englishWord");
     var resultDiv = document.getElementById("result");
-    // Get the English word from the input
+    // สร้างตัวแปรรับinput เป็นคำศัพท์ภาษาอังกฤษ เพื่อแปลเป็นภาษาไทย
     var englishWord = englishWordInput.value;
-    // Perform a mock translation (replace this with your actual logic)
+    // เรียกใช้งานฟังก์ชั่นนี้ถ้าไม่มีคำศัพท์ จะขึ้น error
     var translation = mockTranslate(englishWord);
-    // Display the result
+    // แสดงผลออกหน้าเว็ป
     resultDiv.innerHTML = `<p>Translation: ${translation.thai}</p><p>Type: ${translation.type}</p>`;
     document.getElementById('translateButton').addEventListener('click', function () {
         translateWord();
@@ -112,27 +112,23 @@ function translateWord(resultDiv) {
         
     });
 }
-
+//Event เมื่อกดปุ่ม translate เพื่อแปลคำศัพท์
 document.getElementById('translateButton').addEventListener('click', function () {
     var englishWordInput = document.getElementById("englishWord");
-
-    // Get the English word from the input
     var englishWord = englishWordInput.value;
-
-    // Perform a mock translation (replace this with your actual logic)
     var translation = mockTranslate(englishWord);
 
-    // Set current node to the node corresponding to the translated word
+    // เซ็ตคำศัพท์ที่แปลให้เป็น current node เพื่อที่จะสามารถกด next และ previous ในการเรียกดูคำศัพท์ถัดไปและก่อนหน้าได้
     wordList.current = wordList.findNode(englishWord);
     var resultDiv = document.getElementById("result");
     translateWord(resultDiv);
-    // Display the result
+    // แสดงผล
     resultDiv.innerHTML = `<p>Translation: ${translation.thai}</p><p>Type: ${translation.type}</p>`;
     wordList.displayCurrentWord(); // แสดงผลลัพธ์ใน currentWordDisplay
     
 });
 
-
+//สร้างตัวแปล เพื่อให้ปุ่ม translate เรียกใช้งาน ซึ่งจะเหมือนกับที่ใส่ในโหนด
 var translations = {
     "apple": { thai: "แอปเปิ้ล", type: "noun" },
     "banana": { thai: "กล้วย", type: "noun" },
@@ -154,9 +150,10 @@ var translations = {
     "tree": { thai: "ต้นไม้", type: "noun" },
     "umbrella": { thai: "ร่ม", type: "noun" },
     "victory": { thai: "ชัยชนะ", type: "noun" }
-    // Add more translations as needed
+    // สามารถเพิ่มคำศัพท์เริ่มต้นได้
 };
 
+//ฟังก์ชั่นแสดงคลังคำศัพท์ที่มีทั้งหมด
 function showAllWords() {
     var wordDisplay = document.getElementById("wordDisplay");
 
@@ -170,7 +167,7 @@ function showAllWords() {
     // แสดงผลลัพธ์ใน element ที่กำหนด
     wordDisplay.innerHTML = htmlString;
 }
-
+//Event ของปุ่ม "ดูคำศัพท์ทั้งหมดให้เรียกใช้งานฟังก์ชั่น showAllWords()
 document.getElementById('showAllButton').addEventListener('click', function () {
     showAllWords();
 });
@@ -180,11 +177,12 @@ document.getElementById('showAllButton').addEventListener('click', function () {
 });
 
 
-// Mock translate function (replace this with your actual translation logic)
+// ฟังก์ชั่นแสดง not found ของคำศัพท์ในกรณีที่ไม่มีคำศัพท์ในคลัง
 function mockTranslate(englishWord) {
     return translations[englishWord] || { thai: "Not found", type: "unknown" };
 }
 
+// ฟังก์ชั่น addWord ทำงานโดยให้ป้อนคำศัพท์ คำแปล และชนิดของคำเข้าไป
 function addWord() {
     var continueAdding = true;
 
@@ -219,6 +217,7 @@ function addWord() {
     }
 }
 
+//event ของปุ่ม "เพิ่มคำศัพท์"
 document.getElementById('addWordButton').addEventListener('click', function () {
     addWord();
     wordList.displayCurrentWord();

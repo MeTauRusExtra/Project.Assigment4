@@ -1,0 +1,44 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dictionary App</title>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    
+    <h1>Dictionary App</h1>
+    <div id="wordDisplay"></div>
+    <div>
+        <button id="showAllButton">ดูคำศัพท์ทั้งหมด</button>
+
+    </div>
+    <label for="englishWord">Enter English Word:</label>
+    <input type="text" id="englishWord" placeholder="Type English Word">
+
+    <button id = "translateButton" onclick="translateWord()">Translate</button>
+    
+    <div id="result">
+        <!-- Result will be displayed here -->
+    </div>
+    <div>
+        <br>
+        <button onclick="wordList.showPreviousWord()">Previous Word</button>
+        <button onclick="wordList.showNextWord()">Next Word</button>
+    </div>
+    <div id="currentWordDisplay"></div> 
+    <div>
+        <br>
+        <button id="addWordButton">เพิ่มคำศัพท์</button>
+    </div>
+    
+
+
+  
+
+</body>
+</html>
+
